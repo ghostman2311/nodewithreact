@@ -1,6 +1,16 @@
-const express = require("express");
-require("./services/passport");
-const app = express();
-require("./routes/authRoutes")(app);
+import express from "express";
+import passportSetup from "./services/passport";
+import authRoutes from "./routes/authRoutes";
+import { initializeDbConnection } from "./services/db";
 
-app.listen(5000);
+const app = express();
+const start = async () => {
+  await initializeDbConnection();
+  authRoutes(app);
+
+  app.listen(5000, () => {
+    console.log(`Server has been start on PORT:5000`);
+  });
+};
+
+start();
